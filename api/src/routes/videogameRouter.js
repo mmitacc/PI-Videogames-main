@@ -1,21 +1,16 @@
 const { Router } = require("express");
 // Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
 const {
-  createGame,
   getAllGames,
   searchWordGame,
   searchIdGame,
-  getApiRawg,
-  fillDBwithRawg,
-  getGenresDB,
-} = require("../Controllers/index");
+  createGame,
+} = require("../Controllers/videogameController");
 
-const router = Router();
+const videogameRouter = Router();
 
 // Configurar los routers
-// Ejemplo: router.use('/auth', authRouter);
-router.get("/videogames", async (req, res) => {
+videogameRouter.get("/", async (req, res) => {
   const { name } = req.query;
   let result;
   try {
@@ -23,6 +18,11 @@ router.get("/videogames", async (req, res) => {
       result = await searchWordGame(name);
     } else {
       result = await getAllGames();
+      if (!result.length) {
+        throw Error(
+          `No exiten actualmente 'videogames' en la BD para mostrar!`
+        );
+      }
     }
     res.status(200).json(result);
   } catch (error) {
@@ -30,7 +30,7 @@ router.get("/videogames", async (req, res) => {
   }
 });
 
-router.get("/videogames/:idVideogame", async (req, res) => {
+videogameRouter.get("/:idVideogame", async (req, res) => {
   const { idVideogame } = req.params;
   try {
     const result = await searchIdGame(idVideogame);
@@ -40,15 +40,17 @@ router.get("/videogames/:idVideogame", async (req, res) => {
   }
 });
 
-router.post("/videogames", async (req, res) => {
-  const { name, description, release_date, rating, platforms } = req.body;
+videogameRouter.post("/", async (req, res) => {
+  const { name, description, release_date, rating, platforms, genres } =
+    req.body;
   try {
     const result = await createGame(
       name,
       description,
       release_date,
       rating,
-      platforms
+      platforms,
+      genres
     );
     res.status(200).json(result);
   } catch (error) {
@@ -56,18 +58,4 @@ router.post("/videogames", async (req, res) => {
   }
 });
 
-router.get("/genres", async (req, res) => {
-  try {
-    let result = await getGenresDB();
-    if (!result.length) {
-      const getApiExt = await getApiRawg();
-      getApiExt.forEach(async (gr) => await fillDBwithRawg(gr));
-      result = await getGenresDB();
-    }
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(404).json({ Error: error.message });
-  }
-});
-
-module.exports = router;
+module.exports = videogameRouter;

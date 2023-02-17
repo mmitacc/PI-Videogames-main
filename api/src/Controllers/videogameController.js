@@ -1,13 +1,9 @@
 // Importar los modelos;
 const { Videogame, Genre } = require("../db");
 const { Op } = require("sequelize");
-const fetch = require("node-fetch");
 
 const getAllGames = async () => {
   const getGames = await Videogame.findAll();
-  if (!getGames.length) {
-    throw Error(`No existen 'Videogames' actualmente en la 'BD'!`);
-  }
   return getGames;
 };
 
@@ -18,7 +14,7 @@ const searchWordGame = async (name) => {
         [Op.like]: `%${name}%`,
       },
     },
-    limit: 2,
+    limit: 15,
   });
   if (!searchWG.length) {
     throw Error(`No existe un 'Name of Videogames' con la palabra: '${name}'!`);
@@ -27,12 +23,14 @@ const searchWordGame = async (name) => {
 };
 
 const searchIdGame = async (id) => {
-  const searchId = await Videogame.findAll({
-    where: {
-      id: id,
+  const searchId = await Videogame.findOne({
+    where: { id },
+    include: Genre,
+    through: {
+      attributes: [],
     },
   });
-  if (!searchId.length) {
+  if (!searchId) {
     throw Error(`No existe el ID: '${id}' en la DB 'Videogames'!`);
   }
   return searchId;
@@ -54,8 +52,10 @@ const createGame = async (
   description,
   release_date,
   rating,
-  platforms
+  platforms,
+  genres
 ) => {
+  console.log("GENEROS LLENADOS", genres);
   if (![name, description, platforms].every(Boolean)) {
     throw Error("(*) Faltan llenar algunos campos que son obligatorios!");
   }
@@ -67,45 +67,14 @@ const createGame = async (
     rating,
     platforms,
   });
+  //aquí se agregan los "generos" de cada juego con el metodo "add"
+  await newGame.addGenres(genres);
   return newGame;
 };
 
-const getApiRawg = () => {
-  const getGR = fetch(
-    "https://api.rawg.io/api/genres?key=4b1922756e374dfe8517da432e4def0a"
-  )
-    .then((res) => res.json())
-    .then((data) => data.results)
-    .catch((err) =>
-      console.log(
-        `Problemas en la Api 'https://rawg.io/apidocs' no se pueden obtener los datos!`,
-        err
-      )
-    );
-  return getGR;
-};
-
-const fillDBwithRawg = async (gr) => {
-  const { id, name } = gr;
-  const newGenres = await Genre.create({
-    id,
-    name,
-  });
-  console.table(gr);
-  // return newGenres;
-};
-
-const getGenresDB = async () => {
-  const getGrDb = await Genre.findAll();
-  return getGrDb;
-};
-
 module.exports = {
-  createGame,
   getAllGames,
   searchWordGame,
   searchIdGame,
-  getApiRawg,
-  fillDBwithRawg,
-  getGenresDB,
+  createGame,
 };
