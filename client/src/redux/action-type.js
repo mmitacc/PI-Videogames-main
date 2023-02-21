@@ -1,0 +1,5 @@
+export const GET_VIDEOGAMES = "GET_VIDEOGAMES";
+export const GET_VGAMES_DETAIL = "GET_VGAMES_DETAIL";
+export const CREATE_VIDEOGAME = "CREATE_VIDEOGAME";
+export const GET_GENRES = "GET_GENRES";
+
