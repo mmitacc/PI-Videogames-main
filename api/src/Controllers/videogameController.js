@@ -20,11 +20,25 @@ const getAllGames = async () => {
       }),
     };
   });
-  const getApiRawg = await fetch(
-    `https://api.rawg.io/api/games?key=${API_KEY_RAWG}`
+
+  const pagesRawg = [1, 2, 3, 4, 5]; //Cada página del Api Rawg nos trae solo 20 games
+  const getApiRawg = await Promise.all(
+    pagesRawg.map((page) => {
+      return fetch(
+        `https://api.rawg.io/api/games?key=${API_KEY_RAWG}&page=${page}`
+      )
+        .then((res) => res.json())
+        .then((data) => data.results);
+    })
   )
-    .then((res) => res.json())
-    .then((data) => data.results);
+    .then((resp) => resp.reduce((a, b) => a.concat(b)))
+    .catch((err) =>
+      console.log(
+        `Problemas en la Api 'https://rawg.io/apidocs' no se pueden obtener los datos!`,
+        err
+      )
+    );
+
   const formatApiRawg = getApiRawg.map((obj) => {
     return {
       id: obj.id,
