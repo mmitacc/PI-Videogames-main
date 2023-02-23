@@ -1,4 +1,4 @@
-import v from './VgameDetail.css';
+import './VgameDetail.css';
 
 const VgameDetail = () => {
     return(

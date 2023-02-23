@@ -1,4 +1,4 @@
-import c from './CreateVideogame.css';
+import './CreateVideogame.css';
 
 const CreateVideogame = () => {
 
