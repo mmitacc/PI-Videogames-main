@@ -13,7 +13,7 @@ const Videogames = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="containerVG">
       {videoGames.map((v, index) => {
         return (
           <VideogameCard

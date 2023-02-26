@@ -19,7 +19,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         videoGames: action.payload,
       };
-
+    case GET_VGAMES_DETAIL:
+      return {
+        ...state,
+        vGamesDetail: action.payload,
+      };
+    case CREATE_VIDEOGAME:
+      return {
+        ...state,
+        videoGames: [...state.videoGames, action.payload],
+      };
     default:
       return { ...state };
   }

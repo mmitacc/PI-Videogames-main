@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const fetch = require("node-fetch");
 const { API_KEY_RAWG } = process.env;
 
+//TRAYENDO TODOS LOS "videogames" DE AMBAS APIS (PROPIA Y EXTERNA):
 const getAllGames = async () => {
   const getMyDb = await Videogame.findAll({ include: Genre });
   const formatMyDb = getMyDb.map((obj) => {
@@ -53,9 +54,18 @@ const getAllGames = async () => {
       }),
     };
   });
-  return formatMyDb.concat(formatApiRawg);
+  const getAllApis = formatMyDb.concat(formatApiRawg);
+  //Ordenando los Videogames por ID
+  getAllApis.sort((a, b) => {
+    if (a.id > b.id) return 1;
+    if (a.id < b.id) return -1;
+    return 0;
+  });
+
+  return getAllApis;
 };
 
+//FILTRANDO SOLO LOS "videogames" CON LA PALABRA "name" EN TODAS LAS APIS:
 const searchWordGame = async (name) => {
   const searchWG = await Videogame.findAll({
     where: {
@@ -71,7 +81,11 @@ const searchWordGame = async (name) => {
   return searchWG;
 };
 
+//TRAYENDO SOLO EL "videogame" CON EL INDICE "id" DE TODAS LAS APIS:
 const searchIdGame = async (id) => {
+  if (typeof id !== "number") {
+    id = parseInt(id.slice(1));
+  }
   const searchId = await Videogame.findOne({
     where: { id },
     include: Genre,
@@ -80,22 +94,47 @@ const searchIdGame = async (id) => {
     },
   });
   if (!searchId) {
+    searchId = await fetch(
+      `https://api.rawg.io/api/games/${id}?key=${API_KEY_RAWG}`
+    )
+      .then((res) => res.json())
+      .then((data) => data.results)
+      .catch((err) =>
+        console.log(
+          `Problemas en la Api 'https://rawg.io/apidocs' no se pueden obtener los datos!`,
+          err
+        )
+      );
+  }
+  if (!searchId) {
     throw Error(`No existe el ID: '${id}' en la DB 'Videogames'!`);
   }
-  return searchId;
+
+  return {
+    id: searchId.id,
+    name: searchId.name,
+    rating: searchId.rating,
+    image: searchId.background_image ? searchId.background_image : null,
+    genres: searchId.genres.map((gen) => {
+      return {
+        id: gen.id,
+        name: gen.name,
+      };
+    }),
+  };
 };
 
 //Función generadora de ID para el "model Videogame":
 function* functionGeneratorId() {
-  let number = 5000;
+  let number = 300000; //Número entero INICIAL a generar
   while (true) {
     yield number;
     number = number + 1;
   }
 }
 let generatorId = functionGeneratorId();
-//----------------------------------------------------
 
+//CREANDO UN NUEVO "videogame" CON UN INDICE "autogenerado: functionGeneratorId()":
 const createGame = async (
   name,
   description,

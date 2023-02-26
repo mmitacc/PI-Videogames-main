@@ -6,7 +6,8 @@
   background-color: rgba(255, 215, 0, 0.2);
   color: rgb(0, 50, 100);
   height: 160px;
-  text-shadow: rgb(255, 255, 255) 0.5px 0.5px, white -0.5px -0.5px, white 2px 2px 2px;
+  text-shadow: rgb(255, 255, 255) 0.5px 0.5px, white -0.5px -0.5px,
+    white 2px 2px 2px;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 3fr 2fr 1fr;
@@ -53,10 +54,11 @@
   font-size: 1.5em;
   font-weight: bold;
   color: rgba(0, 50, 100);
-  animation-duration: 4s;
-  animation-name: animLogo;
-  animation-iteration-count: infinite;
 }
+
+/* animation-duration: 4s;
+animation-name: animLogo;
+animation-iteration-count: infinite;
 
 @keyframes animLogo {
   from {
@@ -72,4 +74,4 @@
     transform: rotateY(360deg);
   }
 };
-
+ */

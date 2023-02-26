@@ -13,3 +13,33 @@ export const getVideoGames = () => {
     return dispatch({ type: GET_VIDEOGAMES, payload: allApies });
   };
 };
+
+export const getVgamesDetail = (id) => {
+  return async function (dispatch) {
+    const getDetail = await fetch(`http://localhost:3001/videogames/${id}`)
+      .then((resp) => resp.json())
+      .then((data) => data);
+    return dispatch({ type: GET_VGAMES_DETAIL, payload: getDetail });
+  };
+};
+
+export const createVideoGames = (payload) => {
+  console.log("PAYLOAD CREATE====>  ", payload);
+  return async function (dispatch) {
+    await fetch("http://localhost:3001/videogames", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log("Registro Exitoso: ", data);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      });
+    return dispatch({ type: CREATE_VIDEOGAME, payload });
+  };
+};
