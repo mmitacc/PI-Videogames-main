@@ -30,10 +30,10 @@ videogameRouter.get("/", async (req, res) => {
   }
 });
 
-videogameRouter.get("/:idVideogame", async (req, res) => {
-  const { idVideogame } = req.params;
+videogameRouter.get("/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-    const result = await searchIdGame(idVideogame);
+    const result = await searchIdGame(id);
     res.status(200).json(result);
   } catch (error) {
     res.status(404).json({ Error: error.message });
@@ -41,13 +41,12 @@ videogameRouter.get("/:idVideogame", async (req, res) => {
 });
 
 videogameRouter.post("/", async (req, res) => {
-  const { name, description, release_date, rating, platforms, genres } =
-    req.body;
+  const { name, description, released, rating, platforms, genres } = req.body;
   try {
     const result = await createGame(
       name,
       description,
-      release_date,
+      released,
       rating,
       platforms,
       genres

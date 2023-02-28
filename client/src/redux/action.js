@@ -15,10 +15,12 @@ export const getVideoGames = () => {
 };
 
 export const getVgamesDetail = (id) => {
+  console.log("INGRESO-DETAIL==> ", id);
   return async function (dispatch) {
-    const getDetail = await fetch(`http://localhost:3001/videogames/${id}`)
+    let getDetail = await fetch(`http://localhost:3001/videogames/${id}`)
       .then((resp) => resp.json())
       .then((data) => data);
+      console.log("ACTION-DETAIL===> ", getDetail);
     return dispatch({ type: GET_VGAMES_DETAIL, payload: getDetail });
   };
 };

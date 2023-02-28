@@ -14,7 +14,7 @@ const VideogameCard = ({ id, name, rating, image, genres }) => {
         </Link>
       </div>
       <div className="space distribution">
-        {genres.map((g, index) => {
+        {genres?.map((g, index) => {
           return <GenresCard key={index} id={g.id} name={g.name} />;
         })}
       </div>

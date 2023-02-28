@@ -83,28 +83,28 @@ const searchWordGame = async (name) => {
 
 //TRAYENDO SOLO EL "videogame" CON EL INDICE "id" DE TODAS LAS APIS:
 const searchIdGame = async (id) => {
-  if (typeof id !== "number") {
-    id = parseInt(id.slice(1));
-  }
-  const searchId = await Videogame.findOne({
-    where: { id },
-    include: Genre,
-    through: {
-      attributes: [],
-    },
-  });
-  if (!searchId) {
+  let searchId = {};
+  if (typeof parseInt(id) === "number") {
     searchId = await fetch(
       `https://api.rawg.io/api/games/${id}?key=${API_KEY_RAWG}`
     )
       .then((res) => res.json())
-      .then((data) => data.results)
+      .then((data) => data)
       .catch((err) =>
         console.log(
           `Problemas en la Api 'https://rawg.io/apidocs' no se pueden obtener los datos!`,
           err
         )
       );
+  } else {
+    id = id.slice(1);
+    searchId = await Videogame.findOne({
+      where: { id },
+      include: Genre,
+      through: {
+        attributes: [],
+      },
+    });
   }
   if (!searchId) {
     throw Error(`No existe el ID: '${id}' en la DB 'Videogames'!`);
@@ -114,11 +114,19 @@ const searchIdGame = async (id) => {
     id: searchId.id,
     name: searchId.name,
     rating: searchId.rating,
+    description: searchId.description ? searchId.description : null,
+    released: searchId.released,
     image: searchId.background_image ? searchId.background_image : null,
     genres: searchId.genres.map((gen) => {
       return {
         id: gen.id,
         name: gen.name,
+      };
+    }),
+    platforms: searchId.platforms.map((pf, index) => {
+      return {
+        id: pf.platform.id ? pf.platform.id : index,
+        name: pf.platform.name ? pf.platform.name : pf,
       };
     }),
   };
