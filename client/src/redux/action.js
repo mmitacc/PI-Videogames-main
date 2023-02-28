@@ -20,7 +20,7 @@ export const getVgamesDetail = (id) => {
     let getDetail = await fetch(`http://localhost:3001/videogames/${id}`)
       .then((resp) => resp.json())
       .then((data) => data);
-      console.log("ACTION-DETAIL===> ", getDetail);
+    console.log("ACTION-DETAIL===> ", getDetail);
     return dispatch({ type: GET_VGAMES_DETAIL, payload: getDetail });
   };
 };
@@ -43,5 +43,14 @@ export const createVideoGames = (payload) => {
         console.log("Error: ", err);
       });
     return dispatch({ type: CREATE_VIDEOGAME, payload });
+  };
+};
+
+export const getGenres = () => {
+  return async function (dispatch) {
+    let allGenres = await fetch("http://localhost:3001/genres")
+      .then((resp) => resp.json())
+      .then((data) => data);
+    return dispatch({ type: GET_GENRES, payload: allGenres });
   };
 };
