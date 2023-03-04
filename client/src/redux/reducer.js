@@ -1,8 +1,10 @@
+import cargandoImage from "../img/cargando.gif";
 import {
   GET_VIDEOGAMES,
   GET_VGAMES_DETAIL,
   CREATE_VIDEOGAME,
   GET_GENRES,
+  CLEIN_DETAIL,
 } from "./action-type.js";
 // Importar las action-types
 
@@ -23,6 +25,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         vGamesDetail: action.payload,
+      };
+    case CLEIN_DETAIL:
+      return {
+        ...state,
+        vGamesDetail: { image: cargandoImage },
       };
     case CREATE_VIDEOGAME:
       return {

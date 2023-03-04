@@ -9,7 +9,7 @@ const getAllGames = async () => {
   const getMyDb = await Videogame.findAll({ include: Genre });
   const formatMyDb = getMyDb.map((obj) => {
     return {
-      id: obj.id,
+      id: "M" + obj.id,
       name: obj.name,
       rating: obj.rating,
       image: "",
@@ -84,7 +84,8 @@ const searchWordGame = async (name) => {
 //TRAYENDO SOLO EL "videogame" CON EL INDICE "id" DE TODAS LAS APIS:
 const searchIdGame = async (id) => {
   let searchId = {};
-  if (typeof parseInt(id) === "number") {
+  console.log("ID-CONTROLLERS==> ", id);
+  if (parseInt(id)) {
     searchId = await fetch(
       `https://api.rawg.io/api/games/${id}?key=${API_KEY_RAWG}`
     )
@@ -98,6 +99,7 @@ const searchIdGame = async (id) => {
       );
   } else {
     id = id.slice(1);
+    console.log("ID-CONTROLLERS-MODEL==> ", id);
     searchId = await Videogame.findOne({
       where: { id },
       include: Genre,
@@ -105,11 +107,12 @@ const searchIdGame = async (id) => {
         attributes: [],
       },
     });
+    searchId = JSON.parse(JSON.stringify(searchId));
   }
   if (!searchId) {
     throw Error(`No existe el ID: '${id}' en la DB 'Videogames'!`);
   }
-
+  console.log("1-GET --MYAPI-: SsearchId==> ", searchId);
   return {
     id: searchId.id,
     name: searchId.name,
@@ -117,16 +120,16 @@ const searchIdGame = async (id) => {
     description: searchId.description ? searchId.description : null,
     released: searchId.released,
     image: searchId.background_image ? searchId.background_image : null,
-    genres: searchId.genres.map((gen) => {
+    genres: searchId.genres?.map((gen) => {
       return {
         id: gen.id,
         name: gen.name,
       };
     }),
-    platforms: searchId.platforms.map((pf, index) => {
+    platforms: searchId.platforms?.map((pf, index) => {
       return {
-        id: pf.platform.id ? pf.platform.id : index,
-        name: pf.platform.name ? pf.platform.name : pf,
+        id: pf.platform ? pf.platform.id : index,
+        name: pf.platform ? pf.platform.name : pf,
       };
     }),
   };
@@ -134,7 +137,7 @@ const searchIdGame = async (id) => {
 
 //Función generadora de ID para el "model Videogame":
 function* functionGeneratorId() {
-  let number = 300000; //Número entero INICIAL a generar
+  let number = 1; //Número entero INICIAL a generar
   while (true) {
     yield number;
     number = number + 1;
@@ -156,7 +159,7 @@ const createGame = async (
     throw Error("(*) Faltan llenar algunos campos que son obligatorios!");
   }
   const newGame = await Videogame.create({
-    id: generatorId.next().value,
+    // id: "M" + generatorId.next().value,
     name,
     description,
     release_date,

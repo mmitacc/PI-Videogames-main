@@ -1,6 +1,7 @@
 import {
   GET_VIDEOGAMES,
   GET_VGAMES_DETAIL,
+  CLEIN_DETAIL,
   CREATE_VIDEOGAME,
   GET_GENRES,
 } from "./action-type.js";
@@ -22,6 +23,12 @@ export const getVgamesDetail = (id) => {
       .then((data) => data);
     console.log("ACTION-DETAIL===> ", getDetail);
     return dispatch({ type: GET_VGAMES_DETAIL, payload: getDetail });
+  };
+};
+
+export const cleanVgamesDetail = () => {
+  return {
+    type: CLEIN_DETAIL,
   };
 };
 

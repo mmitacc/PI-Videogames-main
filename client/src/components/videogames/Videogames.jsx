@@ -132,7 +132,7 @@ const Videogames = () => {
             className="inputBlue"
             type="text"
             value={search}
-            placeholder="Escriba aquí..."
+            placeholder=" Escriba aquí..."
             onChange={onSearchChange}
           />
         </div>
@@ -190,13 +190,13 @@ const Videogames = () => {
       </div>
       {/* <hr className="lineHorizontal" /> */}
       <div className="paginacion">
-        <button className="blueButton" onClick={prevPage}>
+        <button className="redButton" onClick={prevPage}>
           Anteriores
         </button>
         <label className="labelRed">
           {"<--- Página N° "} {currentPage / gamesXpag + 1} {" --->"}
         </label>
-        <button className="blueButton" onClick={nextPage}>
+        <button className="redButton" onClick={nextPage}>
           Siguientes
         </button>
       </div>

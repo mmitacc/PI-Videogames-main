@@ -2,7 +2,7 @@ import "./VgameDetail.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getVgamesDetail } from "../../redux/action";
+import { cleanVgamesDetail, getVgamesDetail } from "../../redux/action";
 import GenresCard from "../genresCard/GenresCard";
 import mainImage from "../../img/newgame.jpg";
 import parse from "html-react-parser";
@@ -13,6 +13,7 @@ const VgameDetail = () => {
   console.log("ID====> ", id);
   useEffect(() => {
     dispatch(getVgamesDetail(id));
+    return () => dispatch(cleanVgamesDetail());
   }, [dispatch]);
   const vGamesDetail = useSelector((state) => state.vGamesDetail);
   console.log("DEAIL====>> ", vGamesDetail);

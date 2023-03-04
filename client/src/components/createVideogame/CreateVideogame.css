@@ -1,0 +1,75 @@
+.containerCreate {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.barraCreate {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: rgba(0, 64, 128, 0.5);
+  border-radius: 0 0 10px 10px;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.subtitle {
+  height: 20px;
+  margin: 0;
+}
+
+.labelBlue {
+  border: rgb(1, 27, 53) 5px;
+  border-radius: 2px;
+  background-color: rgb(0, 64, 128);
+  color: white;
+  font-size: 14px;
+}
+
+.labelAlert {
+  color: red;
+  font-style: italic;
+  font-size: 0.7em;
+  border-radius: 0 0 5px 5px;
+  border: red 0.5px solid;
+  margin-top: 1px;
+  margin-left: 5px;
+  padding-left: 5px;
+  width: 433px;
+  /* background-color: red; */
+}
+
+.labelBlue {
+  border: rgb(1, 27, 53) 5px;
+  border-radius: 2px;
+  margin: 5px;
+  background-color: rgb(0, 64, 128);
+  color: white;
+  font-size: 14px;
+}
+
+.blueButton {
+  background-color: rgba(0, 64, 128, 0.8);
+  border: white 1px;
+  border-radius: 7px;
+  color: white;
+  padding: 2.5px;
+  margin: 0px 5px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  height: 25px;
+  cursor: pointer;
+}
