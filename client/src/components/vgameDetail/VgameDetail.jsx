@@ -10,13 +10,13 @@ import parse from "html-react-parser";
 const VgameDetail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  console.log("ID====> ", id);
+  // console.log("ID====> ", id);
   useEffect(() => {
     dispatch(getVgamesDetail(id));
     return () => dispatch(cleanVgamesDetail());
-  }, [dispatch]);
+  }, [dispatch, id]);
   const vGamesDetail = useSelector((state) => state.vGamesDetail);
-  console.log("DEAIL====>> ", vGamesDetail);
+  // console.log("DEAIL====>> ", vGamesDetail);
   const { name, image, genres, description, released, rating, platforms } =
     vGamesDetail;
 

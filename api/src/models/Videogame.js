@@ -14,11 +14,11 @@ module.exports = (sequelize) => {
         autoIncrement: true,
       },
       name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(50),
         allowNull: false,
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(200),
         allowNull: false,
       },
       released: {

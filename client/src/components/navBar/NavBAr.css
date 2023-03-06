@@ -26,3 +26,8 @@
   font-weight: bold;
   color: white;
 }
+
+.active {
+  font-size: large;
+  font-weight: bold;
+}

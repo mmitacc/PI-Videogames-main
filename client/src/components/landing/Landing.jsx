@@ -1,15 +1,7 @@
 import "./Landing.css";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { getGenres } from "../../redux/action";
 
 const Landing = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getGenres());
-  }, []);
-
   return (
     <div className="marco title">
       <h1>My VideoGames - App</h1>

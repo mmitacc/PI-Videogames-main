@@ -45,9 +45,10 @@ export const createVideoGames = (payload) => {
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Registro Exitoso: ", data);
+        alert("Se REGISTRO CORRECTAMENTE el Videogame");
       })
       .catch((err) => {
-        console.log("Error: ", err);
+        console.log("Error: ", err); //*Si hay error no controlado, mostrarlo */
       });
     return dispatch({ type: CREATE_VIDEOGAME, payload });
   };

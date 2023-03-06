@@ -1,56 +1,129 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createVideoGames } from "../../redux/action";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createVideoGames, getGenres } from "../../redux/action";
 import "./CreateVideogame.css";
+import GenresOption from "./GenresOption";
 
 const CreateVideogame = () => {
+  //Traer todos los "genres" para mostrar en el Select:
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getGenres());
+  }, [dispatch]);
+  const { genres } = useSelector((state) => state);
+
+  //Inicializando el estado local del "input":
   const initialState = {
     name: "",
     description: "",
     rating: 0,
-    platforms: [], //Array de name de plataformas
+    released: "",
+    platforms: [], //Array de NAME de plataformas
     genres: [], //Array de ID de generos
   };
 
+  //Se definen estados locales para el Form:
   const [input, setInput] = useState(initialState);
+  //Se definen estados locales para la validación de "error":
   const [error, setError] = useState({
     name: "",
     description: "",
-    rating: 0,
+    rating: "",
   });
+  //Se definen estados locales para mostrar los Generos en pantalla:
+  const [showGenres, setShowGenres] = useState([]);
+
+  //Reglas de validación para campos del "input":
+  const validationRules = {
+    name: /^(?=.{3,50}$)/, // Nombre con un mínimo de 3 y máximo 50 caracteres.
+    description: /^(?=.{5,200}$)/, // Texto con un mínimo de 5 y máximo 200 caracteres.
+    rating: /^([0-9]{1,10}(\.[0-9]{1,2})?)$/, // Número: 0 a 10; puede incluir hasta 2 decimales.
+  };
+
+  //Function validadora de campos del "input":
+  const validateInput = (input) => {
+    console.log("INPUT ANTES===> ", input.name);
+    if (input.name) {
+      if (validationRules.name.test(input.name)) {
+        setError({ ...error, name: "" });
+      } else {
+        setError({
+          ...error,
+          name: "Nombre con un mínimo de 3 y máximo 50 caracteres",
+        });
+      }
+    }
+    if (input.description) {
+      if (validationRules.description.test(input.description)) {
+        setError({ ...error, description: "" });
+      } else {
+        setError({
+          ...error,
+          description: "Texto con un mínimo de 5 y máximo 200 caracteres",
+        });
+      }
+    }
+    if (input.rating) {
+      if (validationRules.rating.test(input.rating) && input.rating <= 10) {
+        setError({ ...error, rating: "" });
+      } else {
+        setError({
+          ...error,
+          rating: "Número: 0 a 10; puede incluir hasta 2 decimales",
+        });
+      }
+    }
+  };
 
   const handleOnChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
     validateInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const validateInput = (input) => {
-    if (/^[0-9]+([,][0-9]+)?$/.test(input.rating)) {
-      setError({ ...error, rating: "" });
-    } else if (input.rating === "") {
-      setError({ ...error, rating: "Este campo es obligatorio llenarlo." });
-    } else {
-      setError({ ...error, rating: "Debe ser un número con 02 decimales." });
-    }
-
-    //NOMBRES DE USUARIO===>  /^[a-z0-9_-]{3,16}$/
-  };
-
   const handleOnChangePlatforms = (e) => {
-    e.preventDefault();
-    setInput({ ...input, platforms: [...input.platforms, e.target.value] });
+    const duplicado = input.platforms.find((obj) => obj === e.target.value);
+    if (!duplicado) {
+      setInput({ ...input, platforms: [...input.platforms, e.target.value] });
+    }
   };
 
   const handleOnChangeGenres = (e) => {
-    setInput({ ...input, genres: [...input.genres, parseInt(e.target.value)] });
+    const duplicado = input.genres.find((obj) => obj === e.target.value);
+    if (!duplicado) {
+      setInput({ ...input, genres: [...input.genres, e.target.value] });
+      let index = e.target.selectedIndex;
+      setShowGenres([...showGenres, e.target.options[index].text]);
+    }
   };
-
-  const dispatch = useDispatch();
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    dispatch(createVideoGames(input));
+    const pendingErrors = Object.values(error).join("");
+    if (
+      !pendingErrors &&
+      input.name &&
+      input.description &&
+      input.rating &&
+      input.platforms.length &&
+      input.genres.length
+    ) {
+      dispatch(createVideoGames(input));
+      setInput(initialState);
+      setShowGenres([]);
+    } else {
+      if (pendingErrors) alert("Existen errores en los campos...!");
+      if (!input.name) alert("Faltan llenar el NOMBRE..!");
+      if (!input.description) alert("Faltan llenar la DESCRIPCIÓN..!");
+      if (!input.rating) alert("Faltan llenar el RATING..!");
+      if (!input.platforms.length)
+        alert("Falta ingresar al menos una PLATAFORMA..!");
+      if (!input.genres.length) alert("Falta ingresar al menos un GENERO..!");
+    }
+  };
+
+  const cleanFormOnClick = (e) => {
     setInput(initialState);
+    setShowGenres([]);
   };
 
   return (
@@ -58,94 +131,108 @@ const CreateVideogame = () => {
       <div className=" barraCreate">
         <h3 className="subtitle">{"<Registro de Nuevo Videogame>"}</h3>
         <h5 className="subtitle">
-          Por favor, rellene todos los campos requeridos:
+          Por favor, rellene todos los datos requeridos:
         </h5>
       </div>
       <form className="containerCreate" onSubmit={handleOnSubmit}>
-        <div>
-          <label className="labelBlue">{"> Name:"}</label>
-          <input
-            type="text"
-            name="name"
-            value={input.name}
-            onChange={handleOnChange}
-            size="50"
-          />
+        <div className="containerSupC">
+          <div className="containerSupC">
+            <label className="labelBlue">{"> Nombre: "}</label>
+            <input
+              type="text"
+              name="name"
+              value={input.name}
+              onChange={handleOnChange}
+              placeholder="Este campo es obligatorio ...!"
+              className="elementContainerSupC"
+            />
+            {error.name !== "" && <p className="labelAlert">{error.name}</p>}
+          </div>
+          <div className="containerSupC">
+            <label className="labelBlue">{">Descripción: "}</label>
+            <textarea
+              name="description"
+              value={input.description}
+              onChange={handleOnChange}
+              placeholder="Este campo es obligatorio ...!"
+              rows={3}
+              className="elementContainerSupC"
+            />
+            {error.description !== "" && (
+              <p className="labelAlert">{error.description}</p>
+            )}
+          </div>
+          <div className="containerSupC">
+            <label className="labelBlue">{">Rating: "}</label>
+            <input
+              type="text"
+              name="rating"
+              value={input.rating}
+              onChange={handleOnChange}
+              className="elementContainerSupC"
+            />
+            {error.rating !== "" && (
+              <p className="labelAlert">{error.rating}</p>
+            )}
+          </div>
+          <div className="containerSupC">
+            <label className="labelBlue">{">Fecha de lanzamiento: "}</label>
+            <input
+              type="date"
+              name="released"
+              value={input.released}
+              onChange={handleOnChange}
+              className="elementContainerSupC"
+            />
+          </div>
+          <div className="containerSupC">
+            <label className="labelBlue">{">Plataformas: "}</label>
+            <select
+              name="platforms"
+              value={input.platforms}
+              onChange={handleOnChangePlatforms}
+              className=" labelBlue"
+              // className="elementContainerSupC"
+            >
+              <option value="Xbox">Xbox</option>
+              <option value="PlayStation">PlayStation</option>
+              <option value="PC">PC</option>
+              <option value="macOS">macOS</option>
+              <option value="Apple Macintosh">Apple Macintosh</option>
+              <option value="Nintendo">Nintendo</option>
+            </select>
+            <textarea value={input.platforms} />
+          </div>
+          <div className="containerSupC">
+            <label className="labelBlue">{">Generos: "}</label>
+            <select
+              name="genres"
+              value={input.genres}
+              onChange={handleOnChangeGenres}
+              className=" labelBlue"
+            >
+              {genres?.map((gr) => {
+                return <GenresOption key={gr.id} id={gr.id} name={gr.name} />;
+              })}
+            </select>
+            <textarea value={showGenres} />
+          </div>
         </div>
-        <div>
-          <label className="labelBlue">{">Description: "}</label>
-          <input
-            type="text"
-            name="description"
-            value={input.description}
-            onChange={handleOnChange}
-            size="45"
-          />
-        </div>
-        <div>
-          <label className="labelBlue">{">Rating: "}</label>
-          <input
-            type="text"
-            name="rating"
-            value={input.rating}
-            onChange={handleOnChange}
-            size="49"
-          />
-          {error.rating !== "" ? (
-            <p className="labelAlert">{error.rating}</p>
-          ) : null}
-        </div>
-        <div>
-          <label className="labelBlue">{">Platforms: "}</label>
-          <select name="platforms" required>
-            <option value="Xbox">Xbox</option>
-            <option value="PlayStation">PlayStation</option>
-            <option value="PC">PC</option>
-            <option value="macOS">macOS</option>
-            <option value="Apple Macintosh">Apple Macintosh</option>
-            <option value="Nintendo">Nintendo</option>
-          </select>
-          <button className="blueButton" onClick={handleOnChangePlatforms}>
-            {"==>"}
+        <div className="containerButton">
+          <button className="blueButton textLink" type="submit">
+            Create Videogame
           </button>
-          <input
-            type="text"
-            name="platforms"
-            value={input.platforms}
-            onChange={handleOnChange}
-            size="60"
-          />
-          {/* <label> || </label>
-          <input
-            type="text"
-            name="platforms"
-            value={input.platforms}
-            onChange={handleOnChangePlatforms}
-          /> */}
+          <button
+            className="blueButton textLink"
+            type="reset"
+            onClick={cleanFormOnClick}
+          >
+            Limpiar
+          </button>
         </div>
-        <div>
-          <label className="labelBlue">genres: </label>
-          <input
-            type="text"
-            name="genres"
-            value={input.genres.id}
-            onChange={handleOnChangeGenres}
-          />
-        </div>
-        <button className="blueButton" type="submit">
-          Create Videogame
-        </button>
       </form>
     </div>
   );
 };
 
 export default CreateVideogame;
-
-// {
-// 	"name": "I'm hero you",
-// 	"description": "Juego SHD only, only...",
-// 	"rating": 0.5,
-// 	"platforms": [ "Nintendo", "PC", "PlayStation"	],
-// 	"genres": [10, 40, 7]
-// }

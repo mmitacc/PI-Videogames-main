@@ -11,7 +11,7 @@ const Videogames = () => {
   const { videoGames } = useSelector((state) => state);
   useEffect(() => {
     dispatch(getVideoGames()); //LLena al array "videoGames" con la data de la Api
-  }, []);
+  }, [dispatch]);
 
   //SELECCIONANDO TIPO DE BUSQUEDA CON ESTADO LOCAL DEL COMPONENTE:---------------------------------------------
   const [typeSearch, setTypeSearch] = useState("Videogame"); //Define un estado local para el tipo de busqueda
