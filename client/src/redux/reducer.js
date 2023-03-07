@@ -1,4 +1,5 @@
 import cargandoImage from "../img/cargando.gif";
+// Importar las action-types
 import {
   GET_VIDEOGAMES,
   GET_VGAMES_DETAIL,
@@ -6,11 +7,10 @@ import {
   GET_GENRES,
   CLEIN_DETAIL,
 } from "./action-type.js";
-// Importar las action-types
 
 const initialState = {
   videoGames: [],
-  vGamesDetail: {},
+  vGamesDetail: { image: cargandoImage },
   genres: [],
 };
 

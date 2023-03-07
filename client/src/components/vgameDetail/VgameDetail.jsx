@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { cleanVgamesDetail, getVgamesDetail } from "../../redux/action";
 import GenresCard from "../genresCard/GenresCard";
-import mainImage from "../../img/newgame.jpg";
+import mainImage from "../../img/newgame1.jpg";
 import parse from "html-react-parser";
 
 const VgameDetail = () => {
