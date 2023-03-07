@@ -103,7 +103,7 @@ const Videogames = () => {
 
   return (
     <div>
-      <div className="paginacion barra">
+      <div className="barra">
         <div>
           {/* Seccion de filtros por nombre y genero de Videogames */}
           <label className="labelBlue">{" Filtrar por => "}</label>
