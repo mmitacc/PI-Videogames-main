@@ -5,6 +5,7 @@ import CreateVideogame from "./components/createVideogame/CreateVideogame.jsx";
 import VgameDetail from "./components/vgameDetail/VgameDetail.jsx";
 import Landing from "./components/landing/Landing";
 import NavBar from "./components/navBar/NavBar";
+export const ruthApp = "http://localhost:3001";
 
 function App() {
   const location = useLocation();

@@ -52,13 +52,13 @@ textarea {
   margin: 0;
 }
 
-.labelBlue {
+/* .labelBlue {
   border: rgb(1, 27, 53) 5px;
   border-radius: 5px;
   background-color: rgb(0, 64, 128);
   color: white;
   font-size: 14px;
-}
+} */
 
 .labelAlert {
   color: red;

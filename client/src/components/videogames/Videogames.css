@@ -81,6 +81,15 @@
   cursor: pointer;
 }
 
+@media screen and (min-width: 1000px) {
+  .containerVG {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, auto);
+    gap: 20px;
+  }
+}
+
 @media screen and (min-width: 800px) and (max-width: 1000px) {
   .containerVG {
     display: grid;
@@ -125,4 +134,14 @@
     flex-direction: column;
     text-align: center;
   }
+}
+
+/* OTRA FORMA DE "REPONSIVE" SOLO CON "GRIT": */
+/* Actualmente no se esta usando en este componente */
+.gallery {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: dense;
+  grid-auto-rows: 22rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
 }

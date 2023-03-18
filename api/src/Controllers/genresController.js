@@ -14,12 +14,6 @@ const getApiRawgGR = async () => {
         err
       )
     );
-  //Ordenando los Generos por ID
-  getGR.sort((a, b) => {
-    if (a.id > b.id) return 1;
-    if (a.id < b.id) return -1;
-    return 0;
-  });
   return getGR;
 };
 
@@ -34,6 +28,13 @@ const fillDBwithRawg = async (gr) => {
 
 const getGenresDB = async () => {
   const getGrDb = await Genre.findAll();
+  //Ordenando los Generos por NAME
+  getGrDb.sort((a, b) => {
+    if (a.name > b.name) return 1;
+    if (a.name < b.name) return -1;
+    return 0;
+  });
+
   return getGrDb;
 };
 

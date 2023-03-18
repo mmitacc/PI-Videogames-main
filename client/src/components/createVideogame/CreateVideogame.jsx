@@ -192,14 +192,13 @@ const CreateVideogame = () => {
               value={input.platforms}
               onChange={handleOnChangePlatforms}
               className=" labelBlue"
-              // className="elementContainerSupC"
             >
-              <option value="Xbox">Xbox</option>
-              <option value="PlayStation">PlayStation</option>
-              <option value="PC">PC</option>
-              <option value="macOS">macOS</option>
               <option value="Apple Macintosh">Apple Macintosh</option>
+              <option value="macOS">macOS</option>
               <option value="Nintendo">Nintendo</option>
+              <option value="PC">PC</option>
+              <option value="PlayStation">PlayStation</option>
+              <option value="Xbox">Xbox</option>
             </select>
             <textarea value={input.platforms} />
           </div>
@@ -219,7 +218,11 @@ const CreateVideogame = () => {
           </div>
         </div>
         <div className="containerButton">
-          <button className="blueButton textLink" type="submit">
+          <button
+            className="blueButton textLink "
+            type="submit"
+            disabled = {input.name === "" ? true : false}
+          >
             Create Videogame
           </button>
           <button

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getVideoGames } from "../../redux/action";
 import VideogameCard from "../../components/videogameCard/VideogameCard.jsx";
-import mainImage from "../../img/newgame1.jpg";
+import mainImage from "../../img/videogames.png";
 
 const Videogames = () => {
   //TRAER TODOS LOS VIDEOGAMES DE LA API CON EL ESTADO GLOBAL DEL COMPONENTE:-------------------------------
@@ -203,7 +203,9 @@ const Videogames = () => {
           Anteriores
         </button>
         <label className="labelRed">
-          {"<--- Página N° "} {currentPage / gamesXpag + 1} {" --->"}
+          <abbr title="15 Videogames por página">
+            {"<--- Página N° "} {currentPage / gamesXpag + 1} {" --->"}
+          </abbr>
         </label>
         <button className="redButton" onClick={nextPage}>
           Siguientes

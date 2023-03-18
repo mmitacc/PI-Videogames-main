@@ -22,7 +22,7 @@ const getAllGames = async () => {
     };
   });
 
-  const pagesRawg = [1, 2, 3, 4, 5]; //Cada página del Api Rawg nos trae solo 20 games
+  const pagesRawg = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; //Cada página del Api Rawg nos trae solo 20 games
   const getApiRawg = await Promise.all(
     pagesRawg.map((page) => {
       return fetch(
@@ -55,7 +55,7 @@ const getAllGames = async () => {
     };
   });
   const getAllApis = formatMyDb.concat(formatApiRawg);
-  //Ordenando los Videogames por ID
+  //Ordenando los Videogames por NAME
   getAllApis.sort((a, b) => {
     if (a.name > b.name) return 1;
     if (a.name < b.name) return -1;

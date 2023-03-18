@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { cleanVgamesDetail, getVgamesDetail } from "../../redux/action";
 import GenresCard from "../genresCard/GenresCard";
-import mainImage from "../../img/newgame1.jpg";
+import mainImage from "../../img/videogame.png";
 import parse from "html-react-parser";
 
 const VgameDetail = () => {
@@ -27,11 +27,12 @@ const VgameDetail = () => {
           <img className="imagenD" src={image ? image : mainImage} alt={name} />
         </div>
         <div className="cardDetail">
-          <h2 className="cardDetail">{name}</h2>
+          <h1 className="cardDetail">{name}</h1>
         </div>
       </div>
       <div className="cardDetail">
-        <h5 className="cardDetail">RATING: {rating}</h5>
+        <h5 className="cardDetail">RATING: </h5>
+        <label>{rating}</label>
       </div>
       <div className="cardDetail" id="desc">
         <h5 className="cardDetail">DESCRIPTION:</h5>
@@ -41,7 +42,8 @@ const VgameDetail = () => {
         </p>
       </div>
       <div className="cardDetail">
-        <h5 className="cardDetail">RELEASED: {released}</h5>
+        <h5 className="cardDetail">RELEASED: </h5>
+        <label>{released}</label>
       </div>
       <div className="cardDetail">
         <h5 className="cardDetail">GENRES:</h5>

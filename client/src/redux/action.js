@@ -5,10 +5,11 @@ import {
   CREATE_VIDEOGAME,
   GET_GENRES,
 } from "./action-type.js";
+import { ruthApp } from "../App";
 
 export const getVideoGames = () => {
   return async function (dispatch) {
-    let allApies = await fetch("http://localhost:3001/videogames")
+    let allApies = await fetch(`${ruthApp}/videogames`)
       .then((resp) => resp.json())
       .then((data) => data);
     return dispatch({ type: GET_VIDEOGAMES, payload: allApies });
@@ -18,7 +19,7 @@ export const getVideoGames = () => {
 export const getVgamesDetail = (id) => {
   console.log("INGRESO-DETAIL==> ", id);
   return async function (dispatch) {
-    let getDetail = await fetch(`http://localhost:3001/videogames/${id}`)
+    let getDetail = await fetch(`${ruthApp}/videogames/${id}`)
       .then((resp) => resp.json())
       .then((data) => data);
     console.log("ACTION-DETAIL===> ", getDetail);
@@ -35,7 +36,7 @@ export const cleanVgamesDetail = () => {
 export const createVideoGames = (payload) => {
   console.log("PAYLOAD CREATE====>  ", payload);
   return async function (dispatch) {
-    await fetch("http://localhost:3001/videogames", {
+    await fetch(`${ruthApp}/videogames`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +57,7 @@ export const createVideoGames = (payload) => {
 
 export const getGenres = () => {
   return async function (dispatch) {
-    let allGenres = await fetch("http://localhost:3001/genres")
+    let allGenres = await fetch(`${ruthApp}/genres`)
       .then((resp) => resp.json())
       .then((data) => data);
     return dispatch({ type: GET_GENRES, payload: allGenres });
