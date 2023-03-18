@@ -21,6 +21,7 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
+const { PORT } = process.env;
 
 // Syncing all the models at once.
 // .sync({ force: true }) // Elimina todas las tablas de la DB y luego re-crea en base a los Models
@@ -28,8 +29,8 @@ const { conn } = require("./src/db.js");
 conn
   .sync()
   .then(() => {
-    server.listen(3001, () => {
-      console.log("Server is listening at http://localhost:3001/"); // eslint-disable-line no-console
+    server.listen(PORT, () => {
+      console.log(`Server is listening at ${PORT}`); // eslint-disable-line no-console
     });
   })
   .catch((err) => console.error({ Error: err.message }));

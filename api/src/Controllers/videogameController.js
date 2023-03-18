@@ -22,7 +22,7 @@ const getAllGames = async () => {
     };
   });
 
-  const pagesRawg = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; //Cada página del Api Rawg nos trae solo 20 games
+  const pagesRawg = [1, 2, 3, 4, 5, 6]; //Cada página del Api Rawg nos trae solo 20 games
   const getApiRawg = await Promise.all(
     pagesRawg.map((page) => {
       return fetch(
