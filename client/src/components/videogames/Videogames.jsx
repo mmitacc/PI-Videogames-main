@@ -122,6 +122,7 @@ const Videogames = () => {
             value={search}
             placeholder=" Escriba aquí..."
             onChange={onSearchChange}
+            maxlength="20"
           />
         </div>
         <div>

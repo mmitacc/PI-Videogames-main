@@ -35,7 +35,7 @@ const CreateVideogame = () => {
 
   //Reglas de validación para campos del "input":
   const validationRules = {
-    name: /^(?=.{3,50}$)/, // Nombre con un mínimo de 3 y máximo 50 caracteres.
+    name: /^(?=.{3,20}$)/, // Nombre con un mínimo de 3 y máximo 50 caracteres.
     description: /^(?=.{5,200}$)/, // Texto con un mínimo de 5 y máximo 200 caracteres.
     rating: /^([0-9]{1,10}(\.[0-9]{1,2})?)$/, // Número: 0 a 10; puede incluir hasta 2 decimales.
   };
@@ -49,7 +49,7 @@ const CreateVideogame = () => {
       } else {
         setError({
           ...error,
-          name: "Nombre con un mínimo de 3 y máximo 50 caracteres",
+          name: "Nombre con un mínimo de 3 y máximo 20 caracteres",
         });
       }
     }
@@ -145,6 +145,7 @@ const CreateVideogame = () => {
               onChange={handleOnChange}
               placeholder="Este campo es obligatorio ...!"
               className="elementContainerSupC"
+              maxlength="20"
             />
             {error.name !== "" && <p className="labelAlert">{error.name}</p>}
           </div>
@@ -170,6 +171,7 @@ const CreateVideogame = () => {
               value={input.rating}
               onChange={handleOnChange}
               className="elementContainerSupC"
+              maxlength="6"
             />
             {error.rating !== "" && (
               <p className="labelAlert">{error.rating}</p>
@@ -221,7 +223,7 @@ const CreateVideogame = () => {
           <button
             className="blueButton textLink "
             type="submit"
-            disabled = {input.name === "" ? true : false}
+            disabled={input.name === "" ? true : false}
           >
             Create Videogame
           </button>
